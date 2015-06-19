@@ -411,6 +411,36 @@ class CloudFiles extends Object {
 		return null;
 	}
 
+        /**
+	* Get URL of an object
+	* @param string filename (required)
+	* @param string container (required)
+	* @return string public uri of object requested
+	* @example CloudFiles::url('image.jpg', 'container_name');
+	* @throws CloudFilesException
+	* @throws SyntaxException
+	* @throws NoSuchContainerException thrown if no remote Container
+	* @throws InvalidResponseException unexpected response
+	*/
+	public static function tmpUrl($filename = null, $container = null,$secret=null,$expires=120,$method='GET'){
+		if (empty($filename) || empty($container) ||  empty($secret)) {
+			self::error("Filename ,secret key and container required.");
+			return false;
+		}
+		if (!self::connect()) {
+			return false;
+		}
+                
+		$Container = self::$ObjectStore->Container($container);
+		if (is_object($Container)) {
+			$Object = $Container->DataObject($filename);
+			if (is_object($Object)) {
+				return $Object->TempUrl($secret, $expires, $method);
+			}
+		}
+		return null;
+	}
+      
 	/**
 	* Get Stream URL of an object
 	* @param string filename (required)
