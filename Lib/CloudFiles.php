@@ -424,7 +424,7 @@ class CloudFiles extends Object {
 	*/
 	public static function tmpUrl($filename = null, $container = null,$secret=null,$expires=120,$method='GET'){
 		date_default_timezone_set('UTC');
-		$expires = 45;
+		$expires = 30;
 		if (empty($filename) || empty($container) ||  empty($secret)) {
 			self::error("Filename ,secret key and container required.");
 			return false;
